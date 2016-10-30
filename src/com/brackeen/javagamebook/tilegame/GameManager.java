@@ -50,6 +50,13 @@ public class GameManager extends GameCore {
     private GameAction shoot;
     private GameAction falldown;
 
+
+
+    public boolean shooting = false;
+    private long currentTime = System.currentTimeMillis();
+    private int shooting_ct = 0;
+    private boolean frozen = false;
+
     public void init() {
         super.init();
 
@@ -114,12 +121,8 @@ public class GameManager extends GameCore {
         inputManager.mapToKey(shoot, KeyEvent.VK_S);
         inputManager.mapToKey(falldown, KeyEvent.VK_DOWN);
     }
-
-    public boolean shooting = false;
-    private long currentTime = System.currentTimeMillis();
-    private int shooting_ct = 0;
-    private boolean frozen = false;
     private void checkInput(long elapsedTime) {
+        long elapsed_time = 0;
         if (exit.isPressed()) {
             stop();
         }
@@ -127,6 +130,13 @@ public class GameManager extends GameCore {
         if (player.isAlive()) {
             float velocityX = 0;
             float velocityY = 0;
+            if (jump.isPressed()) {
+                player.jump(false);
+            }
+            if (falldown.isPressed()) {
+                velocityY+=player.getMaxSpeed();
+                player.setVelocityY(velocityY + 1);
+            }
             if (moveLeft.isPressed()) {
                 velocityX-=player.getMaxSpeed();
             }
@@ -141,44 +151,56 @@ public class GameManager extends GameCore {
             	player.setVelocityY(velocityY + 1);
             }
             if (shoot.isPressed()){
+                elapsed_time = System.currentTimeMillis() - currentTime;
             	//create Bullet
             	if(shooting_ct == 0){
             		if(!frozen){
             			shooting = true;
             			shooting_ct++;
             			currentTime = System.currentTimeMillis();
+
             		}else{
-            			if(System.currentTimeMillis() - currentTime >= 1000){
+            			if(elapsed_time >= 1000){
             				shooting = true;
             				shooting_ct++;
             				currentTime = System.currentTimeMillis();
+
+
             				frozen = false;
             			}
             		}
             	}else if(shooting_ct == 1){
-            		if(System.currentTimeMillis() - currentTime >= 1000){
+            		if(elapsed_time >= 1000){
             			shooting = true;
             			shooting_ct++;
             			currentTime = System.currentTimeMillis();
+
+
             		}
             	}else if(shooting_ct <= 10){
-            		if(System.currentTimeMillis() - currentTime >= 400){
+            		if(elapsed_time >= 400){
             			shooting = true;
             			shooting_ct++;
             			currentTime = System.currentTimeMillis();
+
+
             		}
             	}else{
             		frozen = true;
-            		if(System.currentTimeMillis() - currentTime >= 1000){
+            		if(elapsed_time >= 1000){
             			shooting = true;
             			shooting_ct = 2;
             			currentTime = System.currentTimeMillis();
+
+
             			frozen = false;
             		}
             	}
             }else{
             	shooting_ct = 0;
             }
+
+
             player.setVelocityX(velocityX);   
         }
 
@@ -340,21 +362,21 @@ public class GameManager extends GameCore {
         
         // update bullet
         if(shooting){
-        	shooting = false;
         	myBullet.setY(player.getY());
-        	if(player.face_right){
-        		myBullet.setVelocityX(1.0f);
+        	if(player.face_left){
+        		myBullet.setVelocityX(-1.0f);
         		myBullet.setX(player.getX());
         	}else{
-        		myBullet.setVelocityX(-1.0f);
+        		myBullet.setVelocityX(1.0f);
         		myBullet.setX(player.getX());
         	}
         	myBullet.setVelocityY(0);
         	map.addSprite(myBullet);
         	soundManager.play(shootingSound);
+            shooting = false;
         }
         // update other sprites
-        Iterator i = map.getSprites();;
+        Iterator i = map.getSprites();
         while (i.hasNext()) {
             Sprite sprite = (Sprite)i.next();
             if (sprite instanceof Creature) {
