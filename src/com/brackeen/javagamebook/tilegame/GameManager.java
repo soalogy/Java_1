@@ -189,13 +189,13 @@ public class GameManager extends GameCore {
             screen.getWidth(), screen.getHeight());
         // draw health
         Player player = (Player)map.getPlayer();
-        g.setColor(Color.red);
+        g.setColor(Color.white);
         g.setFont(new Font("Arial",0,50));
-        g.drawString("hp:" + player.getHp() ,50,50);
+        g.drawString("Health:" + player.getHp() ,50,50);
         if(player.getHp() == 0) {
         	g.setColor(Color.red);
             g.setFont(new Font("Arial",0,100));
-            g.drawString("WASTED", 200, 300);
+            g.drawString("GAME OVER", 200, 300);
         }
         if(frozen){
         	g.setColor(Color.cyan);

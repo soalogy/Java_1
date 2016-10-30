@@ -13,12 +13,15 @@ public class Player extends Creature {
 
     private boolean onGround;
     public int hp = 20;
+
     private final int maxhp = 40;
     public Player(Animation left, Animation right,
         Animation deadLeft, Animation deadRight)
     {
         super(left, right, deadLeft, deadRight);
     }
+
+
 
     public int getHp(){
     	//dead, return 0
