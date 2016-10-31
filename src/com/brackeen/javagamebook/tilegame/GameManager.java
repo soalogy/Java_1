@@ -508,14 +508,14 @@ public class GameManager extends GameCore {
                                         (map.getPlayer().getVelocityX()!=0 && System.currentTimeMillis() - creature.bugsct > 500)))){
                     EvilBullet evils =
                             (EvilBullet) resourceManager.getEvilBullet().clone();
-                    if(!creature.face_left){
-                        evils.setX(creature.getX() + 10);
-                        evils.setY(creature.getY() + 10);
-                        evils.setVelocityX(0.7f);
-                    }else{
+                    if(!creature.face_right){
                         evils.setX(creature.getX() - 10);
                         evils.setY(creature.getY() + 10);
                         evils.setVelocityX(-0.7f);
+                    }else{
+                        evils.setX(creature.getX() - 10);
+                        evils.setY(creature.getY() + 10);
+                        evils.setVelocityX(0.7f);
                     }
                     creature.bugsct = System.currentTimeMillis();
                     creature.evilsct++;
