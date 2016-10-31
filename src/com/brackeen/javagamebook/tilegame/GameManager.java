@@ -64,13 +64,11 @@ public class GameManager extends GameCore {
         initInput();
 
         // start resource manager
-        resourceManager = new ResourceManager(
-        screen.getFullScreenWindow().getGraphicsConfiguration());
+        resourceManager = new ResourceManager(screen.getFullScreenWindow().getGraphicsConfiguration());
 
         // load resources
         renderer = new TileMapRenderer();
-        renderer.setBackground(
-            resourceManager.loadImage("background.png"));
+        renderer.setBackground(resourceManager.loadImage("background.png"));
 
         // load first map
         map = resourceManager.loadNextMap();
@@ -84,8 +82,7 @@ public class GameManager extends GameCore {
 
         // start music
         midiPlayer = new MidiPlayer();
-        Sequence sequence =
-            midiPlayer.getSequence("sounds/music.midi");
+        Sequence sequence = midiPlayer.getSequence("sounds/music.midi");
         midiPlayer.play(sequence, true);
         toggleDrumPlayback();
     }
@@ -121,6 +118,11 @@ public class GameManager extends GameCore {
         inputManager.mapToKey(shoot, KeyEvent.VK_S);
         inputManager.mapToKey(falldown, KeyEvent.VK_DOWN);
     }
+
+    /**
+     * Reflect keyboard actions
+     * @param elapsedTime
+     */
     private void checkInput(long elapsedTime) {
         long elapsed_time = 0;
         if (exit.isPressed()) {
@@ -206,6 +208,10 @@ public class GameManager extends GameCore {
 
     }
 
+    /**
+     * Draw Strings in the frame
+     * @param g
+     */
     public void draw(Graphics2D g) {
         renderer.draw(g, map,
             screen.getWidth(), screen.getHeight());
@@ -214,16 +220,19 @@ public class GameManager extends GameCore {
         g.setColor(Color.white);
         g.setFont(new Font("Arial",0,50));
         g.drawString("Health:" + player.getHp() ,50,50);
+        g.drawString("Score:" + player.getScore(), 50,100);
         if(player.getHp() == 0) {
         	g.setColor(Color.red);
             g.setFont(new Font("Arial",0,100));
             g.drawString("GAME OVER", 200, 300);
         }
+        /*
         if(frozen){
         	g.setColor(Color.cyan);
             g.setFont(new Font("Arial",0,50));
             g.drawString("Reloading", 500, 50);
         }
+        */
     }
 
 
@@ -570,6 +579,8 @@ public class GameManager extends GameCore {
                 player.setY(badguy.getY() - player.getHeight());
                 player.jump(true);
                 player.hp += 10;
+                player.update_score(5);
+
             }
             else {
                 // player dies!
