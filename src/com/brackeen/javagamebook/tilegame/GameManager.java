@@ -226,13 +226,7 @@ public class GameManager extends GameCore {
             g.setFont(new Font("Arial",0,100));
             g.drawString("YOU ARE DEAD", 30, 300);
         }
-        /*
-        if(frozen){
-        	g.setColor(Color.cyan);
-            g.setFont(new Font("Arial",0,50));
-            g.drawString("Reloading", 500, 50);
-        }
-        */
+
     }
 
 
@@ -305,6 +299,7 @@ public class GameManager extends GameCore {
         if (s1 == s2) {
             return false;
         }
+
 
         // if one of the Sprites is a dead Creature, return false
         if (s1 instanceof Creature && !((Creature)s1).isAlive()) {
