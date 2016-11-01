@@ -78,7 +78,7 @@ public class GameManager extends GameCore {
         prizeSound = soundManager.getSound("sounds/prize.wav");
         boopSound = soundManager.getSound("sounds/boop2.wav");
         shootSound = soundManager.getSound("sounds/shooting.wav");
-        evilDeadSound = soundManager.getSound("sounds/shouting.wav");
+        evilDeadSound = soundManager.getSound("sounds/death.wav");
 
         // start music
         midiPlayer = new MidiPlayer();
@@ -172,7 +172,7 @@ public class GameManager extends GameCore {
             			}
             		}
             	}else if(shooting_ct == 1){
-            		if(elapsed_time >= 1000){
+            		if(elapsed_time >= 600){
             			shooting = true;
             			shooting_ct++;
             			currentTime = System.currentTimeMillis();
